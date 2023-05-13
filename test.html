@@ -1,0 +1,18 @@
+<script>
+    const promise = new Promise((resolve,reject)=>{
+        if(true){
+            resolve("결과 데이터");
+        }else{
+            reject(new Error("에러"));
+        }
+
+    });
+
+    async function myFunction(){
+        const r = await asyncFunction();
+    }
+
+    const myFunction2 = async() => {
+        const r = await asyncFunction();
+    }
+</script>    
