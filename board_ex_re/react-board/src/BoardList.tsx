@@ -2,16 +2,19 @@ import {Component, ReactNode} from "react";
 import Table from "react-bootstrap/Table"
 import Button from "react-bootstrap/Button"
 import Axios from "axios";
-
 const submitTest = () =>{
     Axios.get("http://localhost:8000/", {}).then(()=>{
         alert("등록완료!");
     });
 };
 
+
 class BoardList extends Component{
+
+
     render(): ReactNode {
         return(
+            
             <div>
                 <Table striped bordered hover>
                     <thead>

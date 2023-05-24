@@ -13,7 +13,12 @@ const db = mysql.createConnection({
     database:'bbs'
 })
 
-
+app.get('/list',(req,res) =>{
+    const sqlQuery = "select * from board"
+    db.query(sqlQuery,(err,result)=>{
+        res.send(result);
+    })
+})
 
 app.get('/', (req,res) =>{
     const sqlQuery = "insert into requested (rowno) values(1)"

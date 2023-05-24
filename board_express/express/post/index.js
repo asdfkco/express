@@ -46,7 +46,7 @@ router.put('/:id',(req,res) => {
     }
     const post = posts.data.find((post) => post.id === parseInt(req.params.id));
 
-    if(!post){
+    if(!post){ 
         res.status(400).send({message : '존재하지 않는 글입니다.'});
         return;
     }
