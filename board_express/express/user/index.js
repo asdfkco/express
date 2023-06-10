@@ -1,21 +1,38 @@
 const express = require("express");
 const router = express.Router();
-const db = require('../db/index');
+const db = require("../db/index");
 const tokenService = require("../jwt");
+
+async function getId(_id){
+  await db.connection.query(`select * from users where id = '${_id}'`,(err,rows,fields) =>{
+    if(err) throw err;
+    console.log(rows[0]);
+  })
+}
 
 // 사용자 정보를 담을 배열
 const users = [];
-async function user_insert(id_value,name_value,password_value) {
-  console.log(`insert into users (id,name,password) values('${id_value}','${name_value}','${password_value}')`);
-  db.connection.query(`insert into users (id,name,password) values ('${id_value}','${name_value}','${password_value}')`,(err,rows,fields)=>{
-    if(err) throw err;
-  })
-};
+async function user_insert(id_value, name_value, password_value) {
+  console.log(
+    `insert into users (id,name,password) values('${id_value}','${name_value}','${password_value}')`
+  );
+  await db.connection.query(
+    `insert into users (id,name,password) values ('${id_value}','${name_value}','${password_value}')`,
+    (err, rows, fields) => {
+      if(err) throw err;
+    }
+  );
+}
+
 
 // 회원가입
 router.post("/register", (req, res) => {
   const { id, password, name } = req.body;
   // TODO id, password, name이 있는지 체크한다.
+  db.connection.query('select * from users',(err,rows,fields) =>{
+    if(err) throw err;
+    console.log(rows)
+  })
   if (!id || !password || !name) {
     res
       .status(400)
@@ -24,14 +41,14 @@ router.post("/register", (req, res) => {
   }
 
   // TODO id는 중복되지 않도록한다.
-  const user = users.find((user) => user.id === id);
+  const user = getId(id);
   if (user) {
     res.status(400).send({ message: "이미 존재하는 아이디입니다." });
     return;
   }
 
   // TODO 사용자를 추가한다.
-  user_insert(req.body.id,req.body.name,req.body.password);
+  user_insert(req.body.id, req.body.name, req.body.password);
   res.send({ message: "사용자를 등록했습니다." });
 });
 
@@ -57,6 +74,11 @@ router.post("/login", (req, res) => {
 
 router.post("/check", (req, res) => {
   res.send(users);
+  
 });
 
+
+router.all("/a",(req,res) =>{
+  
+})
 module.exports = router;
